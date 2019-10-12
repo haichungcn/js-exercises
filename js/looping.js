@@ -281,69 +281,247 @@ function onFindVietnamese() {
 // return a string.
 // It should look like this "There are 7 males and 3 males"
 
+const countGenders = persons => {
+    document.getElementById("countGenders").innerHTML = `
+    There are ${
+        persons.filter(person => person.gender.toLowerCase() == 'm').length
+        } males and ${
+        persons.filter(person => person.gender == 'f').length} females`;
+}
+
+function onCountGenders() {
+    countGenders(people);
+}
+
 // 6. Define a function findTallest() which will take the people array as an argument and
 // return an string.
 // The string should look like "Charles was the tallest at 250mm"
+
+const findTallest = persons => {
+    document.getElementById('findTallest').innerHTML = `
+        ${persons.sort((a, b) => parseInt(b.height) - parseInt(a.height))[0].firstName} was the tallest at ${persons[0].height}.
+    `
+}
+
+function onFindTallest() {
+    findTallest(people);
+}
 
 // 7. Define a function findAverageHeight() which will take the people array as an argument and
 // return an string.
 // The string should look like "The average height of our people is 168mm."
 
+const findAverageHeight = persons => {
+    document.getElementById('findAverageHeight').innerHTML = `
+        The average height of our people is ${parseInt(persons.reduce((a, c) => a + parseInt(c.height), 0) / persons.length)}mm.
+    `
+}
+
+function onFindAverageHeight() {
+    findAverageHeight(people);
+}
+
 // 8. Define a function findZodiacs() which will take the people array as an argument and
 // return an string. The string should say the users were from these signs
 // The string should look like "We have Cancers, Tauruss, ... among our people"
+
+const findZodiacs = persons => {
+    let zodiacs = [];
+    people.map(person => {
+        if (!zodiacs.includes(person.zodiac.toLowerCase())) {
+            zodiacs.push(person.zodiac.toLowerCase())
+        }
+    });
+    document.getElementById('findZodiacs').innerHTML = `We have ${zodiacs.map(z => z[0].toUpperCase() + z.slice(1)).join(', ')}... among our people`
+}
+
+function onFindZodiacs() {
+    findZodiacs(people);
+}
 
 // 9. Define a function findAverageAge() which will take the people array as an argument and
 // return an string. The string will have the average age of the people
 // The string should look like "The average age of the people is 21"
 
+const findAverageAge = persons => {
+    document.getElementById('findAverageAge').innerHTML = `
+        The average age of the people is ${parseInt(persons.reduce((a, c) => a + c.age, 0) / persons.length)}.
+    `
+}
+
+function onFindAverageAge() {
+    findAverageAge(people);
+}
+
 // 10. Define a function findStudents() which will take the people array as an argument and
 // return an array. The array will contain persons who have jobTitle listed as 'Student'.
 // It should look like this [{}, {}, {}]
+
+const findStudents = persons => {
+    document.getElementById('findStudents').innerHTML = `<li>${persons.filter(person => person.jobTitle.toUpperCase() === 'STUDENT').map(person => person.firstName).join('</li>\n<li>')}</li>`
+}
+
+function onFindStudents() {
+    findStudents(people);
+}
 
 // 11. Define a function findNguyens() which will take the people array as an argument and
 // return an array. The array will contain persons whose last names are Nguyen.
 // It should look like this [{}, {}]
 
+const findNguyens = persons => {
+    document.getElementById('findNguyens').innerHTML = `<li>${persons.filter(person => person.lastName.toUpperCase() === 'NGUYEN').map(person => person.firstName).join('</li>\n<li>')}</li>`
+}
+
+function onFindNguyens() {
+    findNguyens(people);
+}
+
 // 12. Define a function findAdults() which will take the people array as an argument and
 // return an array. The array will contain all people who's age is above 18 and above
 // It should look like this [{}, {}, {}, ...]
+
+const findAgeAbove18s = persons => {
+    document.getElementById('findAgeAbove18s').innerHTML = `
+    <li>${persons.filter(person => person.age >= 18).map(person => person.firstName).join('</li>\n<li>')}</li>`
+}
+
+function onFindAgeAbove18s() {
+    findAgeAbove18s(people);
+}
 
 // 13. Define a function findFavoriteColors() which will take the people array as an argument and
 // return an array. The array will contain UNIQUE colors collected from all persons.
 // It should look like this ['red', 'black', 'pink', ...]
 
+const findFavoriteColors = persons => {
+    let colors = persons.map(person => (person.favoriteColors.join(','))).join(',').toLowerCase().split(',');
+    console.log(colors)
+    let colorsObject = {};
+    colors.map(color => {
+        if (colorsObject[color] === null) {
+            colorsObject[color] = 0;
+        }
+        colorsObject[color] = colorsObject[color] + 1;
+
+    })
+    console.log(colorsObject);
+    colors = Object.keys(colorsObject);
+    document.getElementById('findFavoriteColors').innerHTML = `
+    <li>${colors.join('</li>\n<li>')}</li>`;
+}
+
+function onFindFavoriteColors() {
+    findFavoriteColors(people);
+}
+
 // 14. Define a function findJobTitles() which will take the people array as an argument and
 // return an array. The array will contain UNIQUE jobTitles.
 // It should look like this ['CEO', 'Instructor', 'Student']
+
+const findJobTitles = persons => {
+    let jobTitles = [];
+    persons.map(person => {
+        if (!jobTitles.includes(person.jobTitle.toLowerCase())) {
+            jobTitles.push(person.jobTitle.toLowerCase())
+        }
+    });
+    document.getElementById('findJobTitles').innerHTML = `<li>${jobTitles.map(title => title.split(' ').map(word => word[0].toUpperCase() + word.slice(1)).join(' ')).join('</li>\n<li>')}</li>`
+}
+
+function onFindJobTitles() {
+    findJobTitles(people);
+}
 
 // 15. Define a function findBirthYears() which will take the people array as an argument and
 // return an array. The array will contain all years which the people were born in.
 // It should look like this ['1997', '1990', '1987', ...]
 
+const findBirthYears = persons => {
+    let bYears = [];
+    persons.map(person => 2019 - person.age).map(year => !bYears.includes(year) && bYears.push(year));
+    document.getElementById('findBirthYears').innerHTML = bYears.sort();
+}
+
+function onFindBirthYears() {
+    findBirthYears(people);
+}
+
 // 16. Define a function sortOldToYoung() which will take the people array as an argument and
 // return an array. The array will contain all persons sorted from oldest to youngest
 // It should look like this [{}, {}, {}, ...]
+
+const sortOldToYoung = persons => {
+    document.getElementById('sortOldToYoung').innerHTML = `
+    <li>${persons.sort((a, b) => b.age - a.age).map(person => person.firstName).join('</li>\n<li>')}</li>`
+}
+
+function onSortOldToYoung() {
+    sortOldToYoung(people);
+}
 
 // 17. Define a function splitIntoMinorsAndAdults() which will take the people array as an argument and
 // return three arrays. The first array will have two arrays within it.
 // The two nested arrays will contain persons. The 0 index nested array will have minors and the 1 index will have adults.
 // It should look like this [[{}, {}, {}, ...], [{}, {}, {}, ...]]
 
+const splitIntoMinorsAndAdults = persons => {
+    const splitIntoMinorsAndAdultsList = [persons.filter(person => person.age < 18), persons.filter(person => person.age >= 18)];
+    document.getElementById('splitIntoMinorsAndAdults').innerHTML = `MINORS: <li>${splitIntoMinorsAndAdultsList[0].map(person => person.firstName).join('</li>\n<li>')}</li>\n ADULTS: <li>${splitIntoMinorsAndAdultsList[1].map(person => person.firstName).join('</li>\n<li>')}</li>`;
+}
+
+function onSplitIntoMinorsAndAdults() {
+    splitIntoMinorsAndAdults(people);
+}
 // 18. Define a function addFavoriteHerosToPeople() which will take the people array as an argument and
 // return an array. The array will contain all persons in the original array where each person has
 // a new key(favoriteSuperHeros) with the value of an empty array [].
 // It should look like this [{firstName: 'Loi', favoriteSuperHeros: [], ...}]
+
+
+const addFavoriteHerosToPeople = persons => {
+    persons.map(person => person.favoriteSuperHeros = []);
+    console.log(persons);
+}
+
+function onAddFavoriteHerosToPeople() {
+    addFavoriteHerosToPeople(people);
+}
 
 // 19. Define a function addBirthPlacesToPeople() which will take the people array as an argument and
 // return an array. The array will contain all the original persons in the array with an additional
 // key(birthPlace) with the value of a new object {}.
 // It should look like this [{firstName: 'Loi', birthPlace: {}, ...}]
 
+const addBirthPlacesToPeople = persons => {
+    persons.map(person => person.birthPlace = {});
+    console.log(persons);
+}
+
+function onAddBirthPlacesToPeople() {
+    addBirthPlacesToPeople(people);
+}
+
 // 20. Define a function findMostFavoritedColor() which will take the people array as an argument and
 // return an string. The string will be the color which has the most people that have it in their favoriteColors.
 // In the event there are two colors with equal numbers. Return a string that says 'x and y were really popular!'
 // It should look like this 'black' or 'black and red were really popular!'
+
+const findMostFavoritedColor = persons => {
+        let mostPopularColors = {};
+        persons.map(person => {
+            let personalFavoriteColors = person.favoriteColors.map(color => {
+                let colorInLowerCase = color.toLowerCase();
+                mostPopularColors[colorInLowerCase] == null ? mostPopularColors[colorInLowerCase] = 0 : mostPopularColors[colorInLowerCase]++;
+            }) 
+        })
+        let mostPopularNumber = Math.max(...Object.values(mostPopularColors));
+        document.getElementById('findMostFavoritedColor').innerHTML = Object.keys(mostPopularColors).find(color => mostPopularColors[color] === mostPopularNumber);
+}
+
+function onFindMostFavoritedColor() {
+    findMostFavoritedColor(people);
+}
 
 // ----------------------------------------------------------------------------------------------------------------------------------------
 // -----> LOOKING AHEAD
@@ -355,7 +533,7 @@ function onFindVietnamese() {
 // 2. Arguments/Parameters dictate how our function will behave. This is an example of how we could
 // use an additional parameter and make our function more flexible.
 const getNationality = (persons, soughtNationality) =>
-    persons.filter(
-        ({ nationality: userNationality }) =>
-            soughtNationality === userNationality
-    );
+        persons.filter(
+            ({ nationality: userNationality }) =>
+                soughtNationality === userNationality
+        );
